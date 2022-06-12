@@ -5,11 +5,22 @@ const history = document.querySelector('.history-content ul')
 
 display.textContent = '0'
 
-let operator
+let operator = ''
 let prevOperand = ''
 let currOperand = ''
 
 buttonPresses()
+
+function buttonPresses() {
+    getNumberPress()
+    backSpaceNum()
+    allClear()
+    positiveNegative()
+    getOperator()
+    equals()
+    calcSpecial()
+}
+
 
 function calcOperation() {
 
@@ -41,23 +52,77 @@ function calcOperation() {
             display.textContent = '0'
             const goneWrong = 'Something went wrong. Try refreshing'
             errorMsg(goneWrong)
-            removeLastMessage()
     }
-    
     showHistory()
     currOperand = display.textContent
     prevOperand = ''
+}
 
-    //Rounds decimal place if it exists
-    function roundOutput() {
-        if (display.textContent.includes('.')){
-            display.textContent = parseFloat(display.textContent).toFixed(3)
+function calcSpecial() {
+    const specialButtons = document.querySelectorAll('.special')
 
-            while ( display.textContent[display.textContent.length - 1] == '0' || display.textContent[display.textContent.length - 1] == '.') {
-                display.textContent = display.textContent.slice(0, -1)
+    specialButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            if (!(prevOperand == '')) {
+                const singleNum = 'You are currently operating on another number'
+                return errorMsg(singleNum)
             }
-        } 
-    }
+
+            currOperand = display.textContent
+            currNum = parseFloat(currOperand)
+
+            switch (e.target.textContent) {
+                case 'x2':
+                    display.textContent = currNum ** 2
+                    roundOutput()
+                    break;
+                case 'x3':
+                    display.textContent = currNum ** 3
+                    roundOutput()
+                    break;
+                case '√x':
+                    display.textContent = Math.sqrt(currNum)
+                    roundOutput()
+                    break;
+                case 'x!':
+                    if ( !(Number.isInteger(currNum) && currNum >= 0) ) {
+                        const noFactorial = 'Factorial can only be calculated on positive integers'
+                        return errorMsg(noFactorial)
+                    }
+                    display.textContent = factorial(currNum)
+                    roundOutput()
+                    break;
+                default:
+                    display.textContent = '0'
+                    const goneWrong = 'Something went wrong. Try refreshing'
+                    errorMsg(goneWrong)
+            }
+            showHistory(e.target.textContent)
+            currOperand = display.textContent
+
+            function factorial(num) {
+                if (num === 0) return 1;
+                let product = 1;
+                for (let i = num; i > 0; i--) {
+                    product *= i;
+                }
+              return product;
+            }
+        })
+    })
+}
+
+
+
+//Rounds decimal place if it exists
+function roundOutput() {
+    if (display.textContent.includes('.')){
+        display.textContent = parseFloat(display.textContent).toFixed(3)
+
+        while ( display.textContent[display.textContent.length - 1] == '0' || display.textContent[display.textContent.length - 1] == '.') {
+            display.textContent = display.textContent.slice(0, -1)
+        }
+    } 
 }
 
 //Error message in the history log if something goes wrong
@@ -72,21 +137,13 @@ function errorMsg(msg) {
     removeLastMessage()
 }
 
-function buttonPresses() {
-    getNumberPress()
-    backSpaceNum()
-    allClear()
-    positiveNegative()
-    getOperator()
-    equals()
-}
 
-function showHistory() {
+function showHistory(special = '') {
     const historyMsg = document.createElement('li')
 
     //Add history msg
     historyMsg.classList.add('history-msg')
-    historyMsg.textContent = `${prevOperand} ${operator} ${currOperand} = ${display.textContent}`
+    historyMsg.textContent = `${prevOperand} ${operator} ${currOperand} ${special} = ${display.textContent}`
 
     history.insertBefore(historyMsg, history.firstChild)
 
@@ -188,8 +245,7 @@ function getNumberPress() {
         btn.addEventListener('click', (e) => {
             if (display.textContent.length > 12) {
                 const tooMany = 'Maximum length reached'
-                errorMsg(tooMany)
-                return
+                return errorMsg(tooMany)
             }
 
             if (display.textContent.includes('.') && e.target.textContent.includes('.')) return
@@ -201,12 +257,3 @@ function getNumberPress() {
         })
     })
 }
-
-
-// function operation(prevOperand, currOperand, operator) {
-//     const output = prevOperand operator currOperand
-
-//     currOperand = output
-
-
-// }
