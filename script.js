@@ -64,7 +64,7 @@ function calcSpecial() {
     specialButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             if (!(prevOperand == '')) {
-                const singleNum = 'You are currently operating on another number'
+                const singleNum = 'Operating on another number'
                 return errorMsg(singleNum)
             }
             currOperand = display.textContent
@@ -85,7 +85,7 @@ function calcSpecial() {
                     break;
                 case 'x!':
                     if ( !(Number.isInteger(currNum) && currNum >= 0) ) {
-                        const noFactorial = 'Factorial can only be calculated on positive integers'
+                        const noFactorial = 'Must use a positive integer'
                         return errorMsg(noFactorial)
                     }
                     display.textContent = factorial(currNum)
