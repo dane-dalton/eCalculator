@@ -73,8 +73,16 @@ nav a:hover {
     padding: 1rem;
     border: 1px solid black;
     display: flex;
+    flex-direction: column;
     justify-content: flex-end;
     align-items: flex-end;
+}
+
+.prev-display {
+    font-size: 2rem;
+}
+
+.display-text {
     font-size: 4rem;
 }
 
@@ -136,6 +144,10 @@ nav a:hover {
 .history-header {
     padding: 1rem;
     border: 1px solid black;
+}
+
+li {
+    list-style-type: none;
 }
 
 .error-msg {

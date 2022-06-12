@@ -1,4 +1,5 @@
 const display = document.querySelector('.display-text')
+const previousDisplay = document.querySelector('.prev-display')
 const history = document.querySelector('.history-content ul')
 
 display.textContent = '0'
@@ -38,7 +39,11 @@ function calcOperation() {
         default:
             display.textContent = '0'
             errorMsg()
+            removeLastMessage()
     }
+    
+    showHistory()
+
     prevOperand = ''
 
     //Rounds decimal place if it exists
@@ -71,6 +76,25 @@ function buttonPresses() {
     getOperator()
 }
 
+function showHistory() {
+    const historyMsg = document.createElement('li')
+
+    //Add history msg
+    historyMsg.classList.add('history-msg')
+    historyMsg.textContent = `${prevOperand} ${operator} ${currOperand} = ${display.textContent}`
+
+    history.insertBefore(historyMsg, history.firstChild)
+
+    removeLastMessage()
+}
+
+//Removes last message if gt 5
+function removeLastMessage() {
+    if ( history.children.length > 3 ) {
+        history.removeChild(history.lastChild)
+    }
+}
+
 //Change operator value to the last clicked operator
 function getOperator() {
     const operatorButtons = document.querySelectorAll('.operator')
@@ -78,6 +102,7 @@ function getOperator() {
     operatorButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             if(!(prevOperand == '')) calcOperation()
+            previousDisplay.textContent = display.textContent
             changeOperator(e)
             newOperand()
             console.log(prevOperand)
@@ -115,6 +140,7 @@ function allClear() {
 
     acBtn.addEventListener('click', () => {
         display.textContent = '0'
+        previousDisplay.textContent = '0'
         prevOperand = ''
         currOperand = display.textContent
     })
