@@ -116,11 +116,13 @@ function calcSpecial() {
 //Rounds decimal place if it exists
 function roundOutput() {
     if (display.textContent.includes('.')){
-        display.textContent = parseFloat(display.textContent).toFixed(3)
+        display.textContent = parseFloat(display.textContent).toFixed(6)
 
         while ( display.textContent[display.textContent.length - 1] == '0' || display.textContent[display.textContent.length - 1] == '.') {
             display.textContent = display.textContent.slice(0, -1)
         }
+        console.log(typeof display.textContent)
+        if ( !(display.textContent) ) display.textContent = '0'
     } 
 }
 
