@@ -1,31 +1,100 @@
 const display = document.querySelector('.display-text')
+const history = document.querySelector('.history-content ul')
 
-let operand = ''
+display.textContent = '0'
+
+let operator
 let prevOperand = ''
-let currOperand = display
+let currOperand = ''
 
 buttonPresses()
 
+function calcOperation() {
+
+    currOperand = display.textContent
+
+    currNum = parseFloat(currOperand)
+    prevNum = parseFloat(prevOperand)
+
+    console.log(currNum, prevNum)
+    
+    switch (operator) {
+        case '+': 
+            display.textContent = prevNum + currNum
+            roundOutput()
+            break;
+        case '-':
+            display.textContent = prevNum - currNum
+            roundOutput()
+            break;
+        case '*': 
+            display.textContent = prevNum * currNum
+            roundOutput()
+            break;
+        case '/':
+            display.textContent = prevNum / currNum
+            roundOutput()
+            break;
+        default:
+            display.textContent = '0'
+            errorMsg()
+    }
+    prevOperand = ''
+
+    //Rounds decimal place if it exists
+    function roundOutput() {
+        if (display.textContent.includes('.')){
+            display.textContent = parseFloat(display.textContent).toFixed(3)
+
+            while ( display.textContent[display.textContent.length - 1] == '0' || display.textContent[display.textContent.length - 1] == '.') {
+                display.textContent = display.textContent.slice(0, -1)
+            }
+        } 
+    }
+
+    //Error message in the history log if something goes wrong
+    function errorMsg() {
+        const error = document.createElement('li')
+
+        error.classList.add('error-msg')
+        error.textContent = 'Error during operation'
+
+        history.appendChild(error)
+    }
+}
 
 function buttonPresses() {
     getNumberPress()
     backSpaceNum()
     allClear()
     positiveNegative()
-    getOperand()
+    getOperator()
 }
 
-function getOperand() {
-    const operandButtons = document.querySelectorAll('.operand')
+//Change operator value to the last clicked operator
+function getOperator() {
+    const operatorButtons = document.querySelectorAll('.operator')
 
-    operandButtons.forEach(btn => {
+    operatorButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            operand = ''
-            operand = e.target.textContent
-            console.log(operand)
+            if(!(prevOperand == '')) calcOperation()
+            changeOperator(e)
+            newOperand()
+            console.log(prevOperand)
         })
     })
+
+    function changeOperator(e) {
+        operator = ''
+        operator = e.target.textContent
+        console.log(operator)
+    }
+    function newOperand() {
+        prevOperand = display.textContent
+        display.textContent = '0'
+    }
 }
+
 
 //Allows for pos/neg change in current value
 function positiveNegative() {
@@ -33,6 +102,8 @@ function positiveNegative() {
 
     posNeg.addEventListener('click', () => {
         if (display.textContent.includes('-')) return display.textContent = display.textContent.slice(1)
+
+        if(display.textContent == '0') return
 
         display.textContent = '-' + display.textContent
     })

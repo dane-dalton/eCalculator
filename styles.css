@@ -138,6 +138,10 @@ nav a:hover {
     border: 1px solid black;
 }
 
+.error-msg {
+    color: red;
+}
+
 /*----------------------------------*/
 /*Footer*/
 .footer-container {
