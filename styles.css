@@ -78,8 +78,19 @@ nav a:hover {
     align-items: flex-end;
 }
 
+.pre-display-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
 .prev-display {
     font-size: 2rem;
+}
+
+.operator-display {
+    text-align: end;
 }
 
 .display-text {

@@ -1,5 +1,6 @@
 const display = document.querySelector('.display-text')
 const previousDisplay = document.querySelector('.prev-display')
+const previousOperator = document.querySelector('.operator-display')
 const history = document.querySelector('.history-content ul')
 
 display.textContent = '0'
@@ -38,12 +39,13 @@ function calcOperation() {
             break;
         default:
             display.textContent = '0'
-            errorMsg()
+            const goneWrong = 'Something went wrong. Try refreshing'
+            errorMsg(goneWrong)
             removeLastMessage()
     }
     
     showHistory()
-
+    currOperand = display.textContent
     prevOperand = ''
 
     //Rounds decimal place if it exists
@@ -56,16 +58,18 @@ function calcOperation() {
             }
         } 
     }
+}
 
-    //Error message in the history log if something goes wrong
-    function errorMsg() {
-        const error = document.createElement('li')
+//Error message in the history log if something goes wrong
+function errorMsg(msg) {
+    const error = document.createElement('li')
 
-        error.classList.add('error-msg')
-        error.textContent = 'Error during operation'
+    error.classList.add('error-msg')
+    error.textContent = `${msg}`
 
-        history.appendChild(error)
-    }
+    history.insertBefore(error, history.firstChild)
+
+    removeLastMessage()
 }
 
 function buttonPresses() {
@@ -74,6 +78,7 @@ function buttonPresses() {
     allClear()
     positiveNegative()
     getOperator()
+    equals()
 }
 
 function showHistory() {
@@ -90,7 +95,7 @@ function showHistory() {
 
 //Removes last message if gt 5
 function removeLastMessage() {
-    if ( history.children.length > 3 ) {
+    if ( history.children.length > 4 ) {
         history.removeChild(history.lastChild)
     }
 }
@@ -102,8 +107,12 @@ function getOperator() {
     operatorButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
             if(!(prevOperand == '')) calcOperation()
-            previousDisplay.textContent = display.textContent
+
             changeOperator(e)
+
+            previousDisplay.textContent = display.textContent
+            previousOperator.textContent = operator
+
             newOperand()
             console.log(prevOperand)
         })
@@ -134,6 +143,19 @@ function positiveNegative() {
     })
 }
 
+function equals() {
+    const equalsBtn = document.querySelector('.equals')
+
+    equalsBtn.addEventListener('click', () => {
+        if(!(prevOperand == '')) calcOperation()
+
+        display.textContent = currOperand
+        operator = ''
+        previousDisplay.textContent = '0'
+        previousOperator.textContent = ''
+    })
+}
+
 //Clears currentOp, prevOp, and operand. Displays 0
 function allClear() {
     const acBtn = document.querySelector('.ac')
@@ -141,6 +163,7 @@ function allClear() {
     acBtn.addEventListener('click', () => {
         display.textContent = '0'
         previousDisplay.textContent = '0'
+        previousOperator.textContent = ''
         prevOperand = ''
         currOperand = display.textContent
     })
@@ -163,6 +186,12 @@ function getNumberPress() {
 
     numButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
+            if (display.textContent.length > 12) {
+                const tooMany = 'Maximum length reached'
+                errorMsg(tooMany)
+                return
+            }
+
             if (display.textContent.includes('.') && e.target.textContent.includes('.')) return
 
             //Replaces the placeholder value
