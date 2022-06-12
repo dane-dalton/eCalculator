@@ -4,6 +4,8 @@ This is my solution to The Odin Project's calculator challenge. With the slow bu
 
 There is going to be a lot of variables moving around and I expect that to be a challenge at first, but with each project my understanding of variable scopes becomes stronger.
 
+Check out the project here: https://dane-dalton.github.io/eCalculator/
+
 ## Challenges along the way
 
 ## Personal notes
