@@ -57,6 +57,7 @@ function calcOperation() {
     prevOperand = ''
 }
 
+//Calculations for special functions
 function calcSpecial() {
     const specialButtons = document.querySelectorAll('.special')
 

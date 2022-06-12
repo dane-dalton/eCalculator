@@ -1,11 +1,14 @@
+@import 'fonts.css';
+
 :root{
-    font-family: sans-serif;
+    font-family: 'VCR OSD Mono', sans-serif;
 }
 
 *, *::before, *::after {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
+    font-family: 'VCR OSD Mono', sans-serif;
 }
 
 body {
@@ -76,6 +79,8 @@ nav a:hover {
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-end;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 .pre-display-container {
