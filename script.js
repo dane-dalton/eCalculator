@@ -3,33 +3,32 @@ const previousDisplay = document.querySelector('.prev-display')
 const previousOperator = document.querySelector('.operator-display')
 const history = document.querySelector('.history-content ul')
 
-display.textContent = '0'
-
 let operator = ''
 let prevOperand = ''
 let currOperand = ''
+display.textContent = '0'
 
 buttonPresses()
 
+//Ordered from top to bottom
 function buttonPresses() {
-    getNumberPress()
-    backSpaceNum()
-    allClear()
-    positiveNegative()
+    //calcOperation()
+    calcSpecial()
+    //round()
+    //messages() x3
     getOperator()
     equals()
-    calcSpecial()
+    positiveNegative()
+    allClear()
+    backSpaceNum()
+    getNumberPress()
 }
 
 
 function calcOperation() {
-
     currOperand = display.textContent
-
     currNum = parseFloat(currOperand)
     prevNum = parseFloat(prevOperand)
-
-    console.log(currNum, prevNum)
     
     switch (operator) {
         case '+': 
@@ -67,7 +66,6 @@ function calcSpecial() {
                 const singleNum = 'You are currently operating on another number'
                 return errorMsg(singleNum)
             }
-
             currOperand = display.textContent
             currNum = parseFloat(currOperand)
 
@@ -137,7 +135,6 @@ function errorMsg(msg) {
     removeLastMessage()
 }
 
-
 function showHistory(special = '') {
     const historyMsg = document.createElement('li')
 
@@ -146,16 +143,14 @@ function showHistory(special = '') {
     historyMsg.textContent = `${prevOperand} ${operator} ${currOperand} ${special} = ${display.textContent}`
 
     history.insertBefore(historyMsg, history.firstChild)
-
     removeLastMessage()
 }
 
 //Removes last message if gt 5
 function removeLastMessage() {
-    if ( history.children.length > 4 ) {
-        history.removeChild(history.lastChild)
-    }
+    if ( history.children.length > 4 ) history.removeChild(history.lastChild)
 }
+
 
 //Change operator value to the last clicked operator
 function getOperator() {
@@ -166,38 +161,20 @@ function getOperator() {
             if(!(prevOperand == '')) calcOperation()
 
             changeOperator(e)
-
             previousDisplay.textContent = display.textContent
             previousOperator.textContent = operator
-
             newOperand()
-            console.log(prevOperand)
         })
     })
 
     function changeOperator(e) {
         operator = ''
         operator = e.target.textContent
-        console.log(operator)
     }
     function newOperand() {
         prevOperand = display.textContent
         display.textContent = '0'
     }
-}
-
-
-//Allows for pos/neg change in current value
-function positiveNegative() {
-    const posNeg = document.querySelector('.pos-neg')
-
-    posNeg.addEventListener('click', () => {
-        if (display.textContent.includes('-')) return display.textContent = display.textContent.slice(1)
-
-        if(display.textContent == '0') return
-
-        display.textContent = '-' + display.textContent
-    })
 }
 
 function equals() {
@@ -210,6 +187,19 @@ function equals() {
         operator = ''
         previousDisplay.textContent = '0'
         previousOperator.textContent = ''
+    })
+}
+
+//Allows for pos/neg change in current value
+function positiveNegative() {
+    const posNeg = document.querySelector('.pos-neg')
+
+    posNeg.addEventListener('click', () => {
+        if (display.textContent.includes('-')) return display.textContent = display.textContent.slice(1)
+
+        if(display.textContent == '0') return
+
+        display.textContent = '-' + display.textContent
     })
 }
 
