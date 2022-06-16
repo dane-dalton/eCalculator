@@ -7,6 +7,9 @@ There is going to be a lot of variables moving around and I expect that to be a 
 Check out the project here: https://dane-dalton.github.io/eCalculator/
 
 ## Challenges along the way
+-Managing my global current and previous variables are at a given stage of calculation could be handled better in the future. I ended up doing a lot of scrolling up and down to double check them and that can be managed better
+
+-Writing cleaner code for readability. I feel as though I have made a lot of improvements, but there is always room for more. Making a calculator class with calculating methods called by button presses would have resulted in easier to read code
 
 ## Personal notes
 -Figure out text scaling and the app should scale to mobile
